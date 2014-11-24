@@ -1,8 +1,8 @@
 Gem::Specification.new do |spec|
   spec.name        = 'remotr'
-  spec.version     = '0.0.2'
-  spec.date        = '2014-01-21'
-  spec.summary     = "Wrapping HTTParty for our internal APIs"
+  spec.version     = '0.0.3'
+  spec.date        = '2014-11-24'
+  spec.summary     = "Wrapping HTTParty"
   spec.description = "See https://github.com/bukowskis/remotr"
   spec.authors     = %w{ bukowskis }
   spec.homepage    = 'https://github.com/bukowskis/remotr'
