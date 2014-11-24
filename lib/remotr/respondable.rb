@@ -25,7 +25,7 @@ module Remotr
       end
 
       def post(path = {}, params = {}, body = nil)
-        request :post, path, params
+        request :post, path, params, body
       end
 
       def delete(path = {}, params = {})
@@ -33,17 +33,19 @@ module Remotr
       end
 
       def put(path = {}, params = {}, body = nil)
-        request :put, path, params
+        request :put, path, params, body
       end
 
-      def request(method, path, params, body = nil)
-        url = URI.join(config.base_uri, "#{config.base_path}#{path}").to_s
-        fail ArgumentError unless %w( get post delete put update ).include? method.to_s
+      def request(method, path, params = {}, body = nil)
+        path         = "#{config.base_path}#{path}"
+        token        = Signature::Token.new application, config.api_key
+        request      = Signature::Request.new method.to_s.upcase, path, params
+        auth_hash    = request.sign token
+        query_params = params.merge auth_hash
+        url          = URI.join(config.base_uri, path).to_s
 
-        HTTParty.send method, url,
-                      query: params,
-                      headers: { 'Accept' => 'application/json' },
-                      basic_auth: { username: 'api', password: config.api_key }
+        fail ArgumentError unless %w( get post delete put update ).include? method.to_s
+        HTTParty.send method, url, query: query_params, body: body, headers: { 'Accept' => 'application/json' }
       end
 
       def respond_with(httparty_response, custom_namespace = nil)
