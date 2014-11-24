@@ -1,35 +1,3 @@
-# Mac OS X
 .DS_Store
-
-# Bundler
-/.bundle
-
-# Rails
-/tmp
-/log/*.log
-/log/*.age
-/tmp/*
-/doc/mailer_previews/*
-!/doc/mailer_previews/.gitkeep
-
-# Deployment
-BRANCH
-DEPLOYED_AT
-REVISION
-
-# Don't add more helpers, they are evil.
-!/app/helpers/application_helper.rb
-/app/helpers/*.rb
-
-# ––– GEMS –––
-
-# foreman
-.env
-
-# simplecov
-/coverage
-
-# webtranslateit
-.wti
-dump.rdb
-tags
+tmp
+*.gem
