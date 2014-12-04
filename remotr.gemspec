@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.authors     = %w{ bukowskis }
   spec.homepage    = 'https://github.com/bukowskis/remotr'
 
-  spec.files       = Dir['{bin,lib,man,test,spec}/**/*', 'README*', 'LICENSE*'] & `git ls-files -z`.split("\0")
+  spec.files       = Dir['{bin,lib,man}/**/*', 'README*', 'LICENSE*'] & `git ls-files -z`.split("\0")
 
   spec.add_dependency('httparty')
   spec.add_dependency('operation')
