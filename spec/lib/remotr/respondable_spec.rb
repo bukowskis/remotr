@@ -39,7 +39,8 @@ RSpec.describe Remotr::Respondable do
     end
 
     it 'holds the exception as object' do
-      expect(operation.object).to be_instance_of Net::OpenTimeout
+      # Ruby 1.9.3 vs 2.1.1
+      expect(%w(Net::OpenTimeout Timeout::Error)).to include operation.object.class.to_s
     end
   end
 

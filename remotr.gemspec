@@ -9,10 +9,10 @@ Gem::Specification.new do |spec|
 
   spec.files       = Dir['{bin,lib,man}/**/*', 'README*', 'LICENSE*'] & `git ls-files -z`.split("\0")
 
-  spec.add_dependency('httparty')
-  spec.add_dependency('operation')
-  spec.add_dependency('signature', '0.1.7')
-  spec.add_dependency('activesupport')
+  spec.add_dependency 'httparty'
+  spec.add_dependency 'operation'
+  spec.add_dependency 'signature', '0.1.7'
+  spec.add_dependency 'activesupport'
 
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'guard-rspec'
