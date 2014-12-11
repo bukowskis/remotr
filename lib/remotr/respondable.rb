@@ -45,23 +45,39 @@ module Remotr
         url          = URI.join(config.base_uri, path).to_s
 
         fail ArgumentError unless %w( get post delete put update ).include? method.to_s
-        HTTParty.send method, url, query: query_params, body: body, headers: { 'Accept' => 'application/json' }
-      end
-
-      def respond_with(httparty_response, custom_namespace = nil)
-        use_namespace = custom_namespace || namespace
-        object = httparty_response.parsed_response ? httparty_response.parsed_response[use_namespace.to_s] : nil
+        httparty_response = HTTParty.send method, url, timeout: timeout_in_seconds, query: query_params, body: body, headers: { 'Accept' => 'application/json' }
 
         if httparty_response.code.to_i.between? 200, 299
-          Operations.success :remote_request_succeeded, object: object, code: httparty_response.code, body: httparty_response.body
+          Operations.success :request_succeeded, object: httparty_response
         else
-          Operations.failure :remote_request_failed, object: httparty_response, code: httparty_response.code
+          Operations.failure :request_failed, object: httparty_response
         end
 
-      rescue JSON::ParserError
-        Operations.failure :remote_request_parsing_failed, object: httparty_response
+      rescue => exception
+        Operations.failure :connection_failed, object: exception
       end
 
+      def respond_with(request_operation, namespace_to_use = namespace)
+        return request_operation if request_operation.failure?
+        httparty_response = request_operation.object
+
+        return Operations.failure(:response_missing_content_type, object: httparty_response) unless httparty_response.content_type
+        return Operations.failure(:response_is_not_json, object: httparty_response) unless httparty_response.content_type == 'application/json'
+        parsed_response = httparty_response.parsed_response
+        return Operations.failure(:response_missing_success_flag, object: httparty_response) unless parsed_response && parsed_response.key?('success')
+        return Operations.failure(:response_unsuccessful, object: httparty_response) if parsed_response['success'].to_s != 'true'
+
+        object = parsed_response ? parsed_response[namespace_to_use.to_s] : nil
+
+        Operations.success :request_succeeded, object: object, code: httparty_response.code, body: httparty_response.body
+
+      rescue JSON::ParserError
+        Operations.failure :json_parsing_failed, object: httparty_response
+      end
+
+      def timeout_in_seconds
+        config.default_timeout
+      end
     end
 
   end

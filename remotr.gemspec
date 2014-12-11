@@ -14,8 +14,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency('signature', '0.1.7')
   spec.add_dependency('activesupport')
 
-  spec.add_development_dependency('rspec')
-  spec.add_development_dependency('guard-rspec')
-  spec.add_development_dependency('rb-fsevent')
-  spec.add_development_dependency('webmock')
+  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'guard-rspec'
+  spec.add_development_dependency 'rb-fsevent'
+  spec.add_development_dependency 'webmock'
 end
