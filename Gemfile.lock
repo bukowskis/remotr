@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    remotr (0.1.3)
+    remotr (1.0.0)
       activesupport
       httparty
       operation
