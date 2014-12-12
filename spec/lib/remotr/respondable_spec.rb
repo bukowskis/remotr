@@ -46,8 +46,8 @@ RSpec.describe Remotr::Respondable do
 
   context 'getting a 4xx response' do
     before do
-      WebMock.disable!
-      api.config.base_uri = 'http://example.com/does-not-exist'
+      api.config.base_uri = 'https://example.com/does-not-exist'
+      stub_request(:get, /.*example.*/).to_return(status: 404)
     end
 
     it 'fails' do
@@ -73,7 +73,7 @@ RSpec.describe Remotr::Respondable do
     end
 
     it 'has an informative code' do
-      expect(operation.code).to eq :response_missing_content_type
+      expect(operation.code).to eq :response_is_not_parseable
     end
 
     it 'holds the HTTParty as object' do
@@ -91,7 +91,7 @@ RSpec.describe Remotr::Respondable do
     end
 
     it 'has an informative code' do
-      expect(operation.code).to eq :response_missing_content_type
+      expect(operation.code).to eq :response_missing_success_flag
     end
 
     it 'holds the HTTParty as object' do
@@ -109,7 +109,7 @@ RSpec.describe Remotr::Respondable do
     end
 
     it 'has an informative code' do
-      expect(operation.code).to eq :response_is_not_json
+      expect(operation.code).to eq :response_missing_success_flag
     end
 
     it 'holds the HTTParty as object' do

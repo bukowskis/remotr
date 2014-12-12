@@ -60,11 +60,10 @@ module Remotr
       def respond_with(request_operation, namespace_to_use = namespace)
         return request_operation if request_operation.failure?
         httparty_response = request_operation.object
-
-        return Operations.failure(:response_missing_content_type, object: httparty_response) unless httparty_response.content_type
-        return Operations.failure(:response_is_not_json, object: httparty_response) unless httparty_response.content_type == 'application/json'
         parsed_response = httparty_response.parsed_response
-        return Operations.failure(:response_missing_success_flag, object: httparty_response) unless parsed_response && parsed_response.key?('success')
+
+        return Operations.failure(:response_is_not_parseable, object: httparty_response) unless parsed_response
+        return Operations.failure(:response_missing_success_flag, object: httparty_response) unless parsed_response && parsed_response.respond_to?(:key?) && parsed_response.key?('success')
 
         code    = parsed_response['code'].to_s != '' ? parsed_response['code'].to_sym : :response_unsuccessful
         message = parsed_response['message'].to_s != '' ? parsed_response['message'] : code.to_s

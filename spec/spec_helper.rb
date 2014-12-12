@@ -10,7 +10,7 @@ MyTestApp.configure do |config|
   config.api_key         = 'abcdef'
   config.api_version     = 1
   config.base_path       = "/api/v#{config.api_version}"
-  config.default_timeout = 0.3
+  config.default_timeout = 0.2
 end
 
 module MyTestApp
