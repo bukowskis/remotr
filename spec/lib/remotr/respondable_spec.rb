@@ -171,6 +171,28 @@ RSpec.describe Remotr::Respondable do
     end
   end
 
+  context 'JSON with falsey success flag and message' do
+    before do
+      stub_request(:get, /.*example.*/).to_return(status: 200, body: { success: :not_true, code: :something_went_wrong, message: 'I really mean it.' }.to_json, headers: { 'Content-Type' => 'application/json' })
+    end
+
+    it 'fails' do
+      expect(operation).to be_failure
+    end
+
+    it 'derives the code from JSON content' do
+      expect(operation.code).to eq :something_went_wrong
+    end
+
+    it 'has a (human readable) message' do
+      expect(operation.meta.message).to eq 'I really mean it.'
+    end
+
+    it 'holds the HTTParty as object' do
+      expect(operation.object.class).to eq HTTParty::Response
+    end
+  end
+
   context 'JSON with true success flag' do
     before do
       stub_request(:get, /.*example.*/).to_return(status: 200, body: { success: true }.to_json, headers: { 'Content-Type' => 'application/json' })

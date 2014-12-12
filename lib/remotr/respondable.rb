@@ -65,11 +65,13 @@ module Remotr
         return Operations.failure(:response_is_not_json, object: httparty_response) unless httparty_response.content_type == 'application/json'
         parsed_response = httparty_response.parsed_response
         return Operations.failure(:response_missing_success_flag, object: httparty_response) unless parsed_response && parsed_response.key?('success')
-        return Operations.failure(:response_unsuccessful, object: httparty_response) if parsed_response['success'].to_s != 'true'
 
+        code    = parsed_response['code'].to_s != '' ? parsed_response['code'].to_sym : :response_unsuccessful
+        message = parsed_response['message'].to_s != '' ? parsed_response['message'] : code.to_s
+        return Operations.failure(code, object: httparty_response, message: message) if parsed_response['success'].to_s != 'true'
+
+        code   = parsed_response['code'].to_s != '' ? parsed_response['code'].to_sym : :request_succeeded
         object = parsed_response[namespace_to_use.to_s]
-        code = parsed_response['code'].to_s != '' ? parsed_response['code'].to_sym : :request_succeeded
-
         Operations.success code, object: object
 
       rescue JSON::ParserError
