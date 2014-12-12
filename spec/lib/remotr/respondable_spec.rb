@@ -227,4 +227,24 @@ RSpec.describe Remotr::Respondable do
     end
   end
 
+  context 'custom code derived from the response' do
+    let(:operation) { api.first }
+
+    before do
+      stub_request(:get, /.*example.*/).to_return(status: 200, body: { success: true, code: :supercool, event: 'nice event' }.to_json, headers: { 'Content-Type' => 'application/json' })
+    end
+
+    it 'succeeds' do
+      expect(operation).to be_success
+    end
+
+    it 'has an informative code' do
+      expect(operation.code).to eq :supercool
+    end
+
+    it 'holds no object' do
+      expect(operation.object).to eq 'nice event'
+    end
+  end
+
 end
