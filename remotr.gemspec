@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'remotr'
-  spec.version     = '1.1.1'
+  spec.version     = '1.1.2'
   spec.date        = '2014-11-24'
   spec.summary     = "Wrapping HTTParty"
   spec.description = "See https://github.com/bukowskis/remotr"
