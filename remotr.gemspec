@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'remotr'
-  spec.version     = '1.1.3'
+  spec.version     = '1.1.4'
   spec.date        = '2014-11-24'
   spec.summary     = "Wrapping HTTParty"
   spec.description = "See https://github.com/bukowskis/remotr"
@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'httparty'
   spec.add_dependency 'operation'
-  spec.add_dependency 'signature', '0.1.7'
+  spec.add_dependency 'signature', '~> 0.1.8'
   spec.add_dependency 'activesupport'
 
   spec.add_development_dependency 'rspec'
