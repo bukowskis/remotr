@@ -1,4 +1,5 @@
 require 'signature'
+require 'logger'
 
 require 'remotr/configurable'
 require 'remotr/configuration'

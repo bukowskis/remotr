@@ -37,6 +37,15 @@ module Remotr
         end
       end
 
+      private
+
+      def logger
+        if defined?(Rails)
+          Rails.logger
+        else
+          Logger.new(STDOUT)
+        end
+      end
     end
   end
 end
