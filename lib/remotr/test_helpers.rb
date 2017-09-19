@@ -25,9 +25,9 @@ module Remotr
           case method
           when :post
             query_string = options[:query].to_query.present? ? "?#{options[:query].to_query}" : nil
-            send method, "#{url.path}#{query_string}", options[:body], options[:headers]
+            send method, "#{url.path}#{query_string}", body: options[:body], headers: options[:headers]
           when :get
-            send method, url.path, options[:query], options[:headers]
+            send method, url.path, params: options[:query], headers: options[:headers]
           else
             fail NotImplementedError
           end
