@@ -1,5 +1,7 @@
 # Remotr
 
+From version 2.0.0 and up this gem is only compatible with Rails 5.
+
 Example usage:
 
 ```ruby
